@@ -21,8 +21,13 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 		nodes = realloc(nodes, size * sizeof(binary_tree_t *));
 		for (i = size / 2 - 1; i >= 0; --i)
 		{
-			nodes[i * 2 + 1] = nodes[i]->right;
-			nodes[i * 2] = nodes[i]->left;
+			if (nodes[i])
+			{
+				nodes[i * 2 + 1] = nodes[i]->right;
+				nodes[i * 2] = nodes[i]->left;
+			}
+			else
+				nodes[i * 2 + 1] = nodes[i * 2] = NULL;
 		}
 		for (i = 0; i < size; i++)
 			if (nodes[i] == NULL)
