@@ -9,40 +9,28 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 {
 	binary_tree_t **nodes;
 	int size = 1, i, j;
-	int perfect = 1;
 
 	if (tree == NULL)
 		return (0);
 	nodes = malloc(sizeof(binary_tree_t *));
 	*nodes = (binary_tree_t *)tree;
-	while (perfect)
+	while (1)
 	{
 		size *= 2;
 		nodes = realloc(nodes, size * sizeof(binary_tree_t *));
-		for (i = size / 2 - 1; i >= 0; --i)
+		for (i = size / 2 - 1; i >= 0; i--)
 		{
-			if (nodes[i])
-			{
-				nodes[i * 2 + 1] = nodes[i]->right;
-				nodes[i * 2] = nodes[i]->left;
-			}
-			else
-				nodes[i * 2 + 1] = nodes[i * 2] = NULL;
+			nodes[i * 2 + 1] = nodes[i]->right;
+			nodes[i * 2] = nodes[i]->left;
 		}
-		for (i = 0; i < size; i++)
-			if (nodes[i] == NULL)
-				break;
+		for (i = 0; i < size && nodes[i]; i++)
+			continue;
 		if (i < size)
-			perfect = 0;
+			break;
 	}
-	for (j = i + 1; j < size; j++)
-		if (nodes[j])
-		{
-			free(nodes);
-			return (0);
-		}
 	for (j = 0; j < size; j++)
-		if (nodes[j] && (nodes[j]->left || nodes[j]->right))
+		if ((j > i && nodes[j]) ||
+				(j < i && (nodes[j]->left || nodes[j]->right)))
 		{
 			free(nodes);
 			return (0);
