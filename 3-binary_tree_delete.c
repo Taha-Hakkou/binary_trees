@@ -12,5 +12,6 @@ void binary_tree_delete(binary_tree_t *tree)
 		binary_tree_delete(tree->right);
 	if (tree->left)
 		binary_tree_delete(tree->left);
-	free(tree);
+	if (tree)
+		free(tree);
 }

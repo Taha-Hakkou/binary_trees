@@ -11,53 +11,36 @@
  */
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-	const binary_tree_t **nodes;
-	size_t height, i, j, before = 0, after = 1, tmp;
+	binary_tree_t **nodes;
+	int size = 1, i;
+	int empty = 0;
 
-	height = binary_tree_height(tree);
+	if (tree == NULL || func == NULL)
+		return;
 	nodes = malloc(sizeof(binary_tree_t *));
-	*nodes = tree;
-	for (i = 0; i < height; i++)
+	*nodes = (binary_tree_t *)tree;
+	func(tree->n);
+	while (!empty)
 	{
-		tmp = after;
-		for (j = before; j < after; j++)
+		size *= 2;
+		nodes = realloc(nodes, size * sizeof(binary_tree_t *));
+		for (i = size / 2 - 1; i >= 0; --i)
 		{
-			if (nodes[j]->left)
+			if (nodes[i])
 			{
-				tmp++;
-				nodes = realloc(nodes, tmp * sizeof(binary_tree_t *));
-				nodes[tmp - 1] = nodes[j]->left;
+				nodes[i * 2 + 1] = nodes[i]->right;
+				nodes[i * 2] = nodes[i]->left;
 			}
-			if (nodes[j]->right)
-			{
-				tmp++;
-				nodes = realloc(nodes, tmp * sizeof(binary_tree_t *));
-				nodes[tmp - 1] = nodes[j]->right;
-			}
+			else
+				nodes[i * 2 + 1] = nodes[i * 2] = NULL;
 		}
-		before = after;
-		after = tmp;
+		empty = 1;
+		for (i = 0; i < size; i++)
+			if (nodes[i])
+			{
+				func(nodes[i]->n);
+				empty = 0;
+			}
 	}
-	for (i = 0; i < after; i++)
-		func(nodes[i]->n);
 	free(nodes);
-}
-
-/**
- * binary_tree_height - measures the height of a binary tree
- * @tree: pointer to the root node of the tree to measure the height
- * Return: tree's height, and 0 if tree is NULL
- */
-size_t binary_tree_height(const binary_tree_t *tree)
-{
-	size_t height, rheight;
-
-	if (tree == NULL || !(tree->left || tree->right))
-		return (0);
-	height = binary_tree_height(tree->left);
-	rheight = binary_tree_height(tree->right);
-	if (rheight > height)
-		height = rheight;
-	height++;
-	return (height);
 }
