@@ -38,8 +38,8 @@ int binary_tree_is_complete(const binary_tree_t *tree)
 	for (j = i + 1; j < size; j++)
 		if (nodes[j])
 			return (0);
-	for (j = 0; j < i; j++)
-		if (nodes[j]->left || nodes[j]->right)
+	for (j = 0; j < size; j++)
+		if (nodes[j] && (nodes[j]->left || nodes[j]->right))
 			return (0);
 	return (1);
 }
