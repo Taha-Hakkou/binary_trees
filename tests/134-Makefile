@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -pedantic
+SRC = binary_tree_print.c 134-main.c 134-heap_to_sorted_array.c 133-heap_extract.c 132-array_to_heap.c 131-heap_insert.c
+NAME = 134-heap_sort
+
+all: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+
+clean:
+	$(RM) $(NAME)

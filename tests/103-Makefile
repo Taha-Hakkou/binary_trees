@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -pedantic
+SRC = binary_tree_print.c 103-main.c 103-binary_tree_rotate_left.c 0-binary_tree_node.c
+NAME = 103-rotl
+
+all: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+
+clean:
+	$(RM) $(NAME)

@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -pedantic
+SRC = binary_tree_print.c 12-main.c 12-binary_tree_leaves.c 0-binary_tree_node.c 2-binary_tree_insert_right.c
+NAME = 12-leaves
+
+all: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME)
+
+clean:
+	$(RM) $(NAME)
