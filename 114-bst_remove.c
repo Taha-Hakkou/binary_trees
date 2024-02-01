@@ -35,6 +35,30 @@ bst_t *bst_remove(bst_t *root, int value)
 	else if (node->left)
 		successor = node->left;
 	/* remove node */
+	if (successor == NULL)
+		free(node);
+	else if (successor == node->left)
+	{
+		node->left->parent = node->parent;
+		if (node->parent)
+		{
+			if (node == node->parent->left)
+				node->parent->left = node->left;
+			else
+				node->parent->right = node->right;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
 	if (node->parent)
 	{
 		successor->parent = node->parent;
