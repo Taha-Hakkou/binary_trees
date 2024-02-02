@@ -36,50 +36,51 @@ bst_t *bst_remove(bst_t *root, int value)
 		successor = node->left;
 	/* remove node */
 	if (successor == NULL)
+	{
 		free(node);
-	else if (successor == node->left)
-	{
-		node->left->parent = node->parent;
-		if (node->parent)
-		{
-			if (node == node->parent->left)
-				node->parent->left = node->left;
-			else
-				node->parent->right = node->right;
-		}
+		return (root);
 	}
-
-
-
-
-
-
-
-
-
-
-
-	if (node->parent)
+	/* 1 */
+	if (node->right)
 	{
-		successor->parent = node->parent;
-		if (successor)
-		{
-			if (node->parent->left == node)
-				node->parent->left = successor;
-			else
-				node->parent->right = successor;
-		}
+		if (successor == node->right)
+			node->right->left = node->left;
+		else
+			successor->parent->left = NULL;
 	}
-	else
+	/* 2 */
+	successor->parent = node->parent;
+	if (node->left != successor)
+		successor->left = node->left;
+	if (node->right != successor)
+		successor->right = node->right;
+	/* 3 */
+	if (successor->left && successor->right == NULL)
+		successor->left->parent = successor;
+	else if (successor->right)
 	{
-		if (successor)
-		{
-
-		}
+		if (successor->left == NULL)
+			successor->right->parent = successor;
 		else
 		{
-			free(node);
-			return (NULL);
+			successor->left->parent = successor;
+			if (successor->right->left)
+				successor->right->parent = successor;
 		}
 	}
+	/* 3 + 4 */
+	if (successor->parent)
+	{
+		if (node == successor->parent->left)
+			successor->parent->left = successor;
+		else
+			successor->parent->right = successor;
+	}
+	else
+		root = successor;
+	node->left = NULL;
+	node->right = NULL;
+	node->parent = NULL;
+	free(node);
+	return (root);
 }
