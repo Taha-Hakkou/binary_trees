@@ -18,12 +18,14 @@ int binary_tree_is_heap(const binary_tree_t *tree)
 	{
 		size *= 2;
 		nodes = realloc(nodes, size * sizeof(binary_tree_t *));
-		for (i = size / 2 - 1; i >= 0; --i)
+		for (i = size / 2 - 1; i >= 0; i--)
 		{
-			if (nodes[i]->left && nodes[i]->left->n > nodes[i]->n)
+			if ((nodes[i]->left && nodes[i]->left->n > nodes[i]->n) ||
+					(nodes[i]->right && nodes[i]->right->n > nodes[i]->n))
+			{
+				free(nodes);
 				return (0);
-			if (nodes[i]->right && nodes[i]->right->n > nodes[i]->n)
-				return (0);
+			}
 			nodes[i * 2 + 1] = nodes[i]->right;
 			nodes[i * 2] = nodes[i]->left;
 		}
@@ -32,10 +34,7 @@ int binary_tree_is_heap(const binary_tree_t *tree)
 		if (i < size)
 			break;
 	}
-	for (j = i + 1; j < size; j++)
-		if (nodes[j])
-			return (0);
-	for (j = 0; j < i; j++)
+	for (j = 0; j < size; j++)
 		if ((j > i && nodes[j]) ||
 				(j < i && (nodes[j]->left || nodes[j]->right)))
 		{
